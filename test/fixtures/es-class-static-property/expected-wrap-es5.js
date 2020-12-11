@@ -22,6 +22,7 @@ function (_React$Component) {
   return Foo1;
 }(React.Component);
 
+Foo1.fetchData = process.env.NODE_ENV !== "production" ? function () {} : {};
 Foo1.propTypes = process.env.NODE_ENV !== "production" ? {
   bar1: PropTypes.string
 } : {};
@@ -44,6 +45,9 @@ function (_React$Component2) {
 }(React.Component);
 
 exports.default = Foo2;
+Foo2.fetchData = process.env.NODE_ENV !== "production" ? function () {
+  console.log('hello');
+} : {};
 Foo2.propTypes = process.env.NODE_ENV !== "production" ? {
   bar2: PropTypes.string
 } : {};

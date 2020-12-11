@@ -169,6 +169,7 @@ export default function(api) {
                 throw new Error(`unrecognized template type ${as}`)
             }
           },
+          removeKeys: [].concat(state.opts.removeKeys || ['fetchData', 'propTypes']),
           mode: state.opts.mode || 'remove',
           ignoreFilenames,
           types,
@@ -213,7 +214,7 @@ export default function(api) {
             exit(path) {
               const node = path.node
 
-              if (node.computed || node.key.name !== 'propTypes') {
+              if (node.computed || !globalOptions.removeKeys.includes(node.key.name)) {
                 return
               }
 
@@ -243,7 +244,7 @@ export default function(api) {
           ClassProperty(path) {
             const { node, scope } = path
 
-            if (node.key.name === 'propTypes') {
+            if (globalOptions.removeKeys.includes(node.key.name)) {
               const pathClassDeclaration = scope.path
 
               if (isReactClass(pathClassDeclaration.get('superClass'), scope, globalOptions)) {
@@ -263,7 +264,7 @@ export default function(api) {
             if (
               node.left.computed ||
               !node.left.property ||
-              node.left.property.name !== 'propTypes'
+              !globalOptions.removeKeys.includes(node.left.property.name)
             ) {
               return
             }
